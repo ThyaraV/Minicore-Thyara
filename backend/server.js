@@ -50,50 +50,51 @@ const Venta = mongoose.model('Venta', ventaSchema);
 //Ruta para buscar 
 // Ruta para buscar el producto más vendido por fecha y vendedor
 app.post('/buscar', async (req, res) => {
-    const { fechaVenta, fechaFin, vendedor } = req.body;
-    console.log('Valores de fecha recibidos:', fechaVenta, fechaFin);
+    const { fechaVenta, fechaFin } = req.body;
     try {
-        await Venta.aggregate([
-            {
-                $match: {
-                    fechaVenta: { $gte: new Date(fechaVenta), $lt: new Date(fechaFin) },
-                },
-            },
-            {
-                $group: {
-                    _id: '$producto',
-                    totalVentas: { $sum: 1 },
-                    vendedor: { $first: '$vendedor' },
-                },
-            },
-            {
-                $sort: {
-                    totalVentas: -1,
-                },
-            },
-            {
-                $limit: 1,
-            },
-        ])
-            .then(async (resultados) => {
-                if (resultados.length === 0) {
-                    return res.status(404).json({ error: 'No se encontraron ventas en el rango de fechas proporcionados' });
-                }
-
-                const productoMasVendido = resultados[0]._id;
-                const totalVentas = resultados[0].totalVentas;
-
-                // Obtener el nombre del vendedor mediante una consulta adicional
-                const vendedorId = resultados[0].vendedor;
-                const vendedor = await Usuario.findById(vendedorId, 'nombre');
-
-                res.json({ productoMasVendido, totalVentas, vendedor: vendedor.nombre });
-            });
+      const resultados = await Venta.aggregate([
+        {
+          $match: {
+            fechaVenta: { $gte: new Date(fechaVenta), $lt: new Date(fechaFin) },
+          },
+        },
+        {
+          $group: {
+            _id: { vendedor: '$vendedor', producto: '$producto' },
+            totalVentas: { $sum: 1 },
+          },
+        },
+        {
+          $sort: {
+            '_id.vendedor': 1, totalVentas: -1,
+          },
+        },
+      ]);
+  
+      if (resultados.length === 0) {
+        return res.status(404).json({ error: 'No se encontraron ventas en el rango de fechas proporcionados' });
+      }
+  
+      const productosMasVendidosPorVendedor = {};
+  
+      resultados.forEach((resultado) => {
+        const vendedor = resultado._id.vendedor;
+        const producto = resultado._id.producto;
+        const totalVentas = resultado.totalVentas;
+  
+        if (!productosMasVendidosPorVendedor[vendedor]) {
+          productosMasVendidosPorVendedor[vendedor] = [];
+        }
+  
+        productosMasVendidosPorVendedor[vendedor].push({ producto, totalVentas });
+      });
+  
+      res.json({ productosMasVendidosPorVendedor });
     } catch (error) {
-        res.status(500).json({ error: 'Error al buscar el producto más vendido', message: error.message });
+      res.status(500).json({ error: 'Error al buscar los productos más vendidos', message: error.message });
     }
-
-});
+  });
+  
 
 
 
