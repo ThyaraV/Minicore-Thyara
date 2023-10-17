@@ -51,6 +51,7 @@ const Buscador = () => {
           ))}
         </ul>
       </div>
+          
     ))}
   </div>
 )}

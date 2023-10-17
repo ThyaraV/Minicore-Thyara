@@ -88,6 +88,8 @@ app.post('/buscar', async (req, res) => {
   
         productosMasVendidosPorVendedor[vendedor].push({ producto, totalVentas });
       });
+
+      console.log(resultados);
   
       res.json({ productosMasVendidosPorVendedor });
     } catch (error) {
