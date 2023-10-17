@@ -7,35 +7,31 @@ const cors = require('cors');
 
 const app = express();
 const PORT = 5000;
-app.use(cors()); // Agrega esta línea para habilitar CORS
+app.use(cors()); 
 
-// Middleware
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Conexión a MongoDB Atlas
+// Conexión 
 mongoose
     .connect('mongodb+srv://thyaravintimilla:SAgBv3aiqa9tLINi@cluster0.qlmd0uh.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
     .then(() => {
-        console.log('Conexión exitosa a MongoDB Atlas');
+        console.log('Se conectó existosamente a MongoDB Atlas');
     })
     .catch((error) => {
-        console.error('Error al conectar a MongoDB Atlas:', error);
+        console.error('Error al conectar MongoDB Atlas:', error);
     });
 
-// Definición del esquema de usuario
+// Esquema de usuario
 const usuarioSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
 });
 
-// Modelo de usuario
-const Usuario = mongoose.model('Usuario', usuarioSchema);
-
-
-// Definición del esquema de venta
+//Esquema de venta
 const ventaSchema = new mongoose.Schema({
     fechaVenta: { type: Date, required: true },
     fechaFin: { type: Date, required: true },
@@ -44,11 +40,13 @@ const ventaSchema = new mongoose.Schema({
     monto: { type: Number, required: true },
 });
 
+// Modelo de usuario
+const Usuario = mongoose.model('Usuario', usuarioSchema);
 // Modelo de venta
 const Venta = mongoose.model('Venta', ventaSchema);
 
-//Ruta para buscar 
-// Ruta para buscar el producto más vendido por fecha y vendedor
+
+// Ruta para buscar el producto más vendido por fecha
 app.post('/buscar', async (req, res) => {
     const { fechaVenta, fechaFin, vendedor } = req.body;
     console.log('Valores de fecha recibidos:', fechaVenta, fechaFin);
@@ -77,13 +75,12 @@ app.post('/buscar', async (req, res) => {
         ])
             .then(async (resultados) => {
                 if (resultados.length === 0) {
-                    return res.status(404).json({ error: 'No se encontraron ventas en el rango de fechas proporcionados' });
+                    return res.status(404).json({ error: 'No se encontraron ventas en el rango de fechas seleccionadas' });
                 }
 
                 const productoMasVendido = resultados[0]._id;
                 const totalVentas = resultados[0].totalVentas;
 
-                // Obtener el nombre del vendedor mediante una consulta adicional
                 const vendedorId = resultados[0].vendedor;
                 const vendedor = await Usuario.findById(vendedorId, 'nombre');
 
@@ -98,19 +95,7 @@ app.post('/buscar', async (req, res) => {
 
 
 
-
-// Ruta para obtener todos los usuarios
-app.get('/usuarios', (req, res) => {
-    Usuario.find()
-        .then((usuarios) => {
-            res.json(usuarios);
-        })
-        .catch((error) => {
-            res.status(500).json({ error: 'Error al obtener los usuarios' });
-        });
-});
-
-// Ruta para crear un nuevo usuario
+// Crear un nuevo usuario
 app.post('/usuarios', async (req, res) => {
     try {
         const usuario = new Usuario(req.body);
@@ -122,8 +107,29 @@ app.post('/usuarios', async (req, res) => {
     }
 });
 
+// Obtener todos los usuarios
+app.get('/usuarios', (req, res) => {
+    Usuario.find()
+        .then((usuarios) => {
+            res.json(usuarios);
+        })
+        .catch((error) => {
+            res.status(500).json({ error: 'Error al obtener los usuarios' });
+        });
+});
 
-// Ruta para obtener todas las ventas
+//Crear una nueva venta
+app.post('/ventas', async (req, res) => {
+    try {
+        const venta = new Venta(req.body);
+        await venta.save();
+        res.send({ message: 'Venta creada exitosamente' });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Obtener todas las ventas
 app.get('/ventas', (req, res) => {
     Venta.find()
         .populate('vendedor', 'nombre')
@@ -135,18 +141,6 @@ app.get('/ventas', (req, res) => {
         });
 });
 
-// Ruta para crear una nueva venta
-app.post('/ventas', async (req, res) => {
-    try {
-        const venta = new Venta(req.body);
-        await venta.save();
-        res.send({ message: 'Venta creada exitosamente' });
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor iniciado en el puerto ${PORT}`);
 });

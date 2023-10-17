@@ -25,17 +25,17 @@ const Buscador = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2 className='titulo'>Producto más Vendido</h2>
       <div className='filtros'>
-        <label className="label" htmlFor="fechaVenta">Fecha de Venta:</label>
+        <label className="label" htmlFor="fechaVenta">Fecha de inicial:</label>
         <input className="fechas" type="date" id="fechaVenta" value={fechaVenta} onChange={handleFechaVentaChange} />
       
         <label className="label" htmlFor="fechaFin">Fecha Final:</label>
         <input className="fechas" type="date" id="fechaFin" value={fechaFin} onChange={handleFechaFinChange} />
       </div>
       <div className='conbutton'>
-      <button className='boton' onClick={handleBuscarClick}>Buscar</button>
+        <button className='boton' onClick={handleBuscarClick}>Buscar</button>
       </div>
       {resultado && (
         <div>
@@ -46,12 +46,10 @@ const Buscador = () => {
         </div>
       )}
       <div className='linkC'>
-      <a className='link' href="https://github.com/ThyaraV/Minicore-Thyara.git">Repositorio Github del Mini-Core</a>
+        <a className='link' href="https://github.com/ThyaraV/Minicore-Thyara.git">Repositorio Github del Mini-Core-ThyaraVintimilla</a>
       </div>
     </div>
-    
   );
- 
 };
 
 export default Buscador;
