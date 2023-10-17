@@ -38,26 +38,15 @@ const Buscador = () => {
       <button className='boton' onClick={handleBuscarClick}>Buscar</button>
       </div>
       {resultado && (
-  <div>
-    <h3>Resultados:</h3>
-    {resultado && resultado.productosMasVendidosPorVendedor && Object.keys(resultado.productosMasVendidosPorVendedor).map((vendedor) =>(
-      <div key={vendedor}>
-        <h4>Vendedor: {vendedor}</h4>
-        <ul>
-          {resultado.productosMasVendidosPorVendedor[vendedor].map((producto, index) => (
-            <li key={index}>
-              Producto más vendido: {producto.producto} (Total de ventas: {producto.totalVentas})
-            </li>
-          ))}
-        </ul>
-      </div>
-          
-    ))}
-  </div>
-)}
-
+        <div>
+          <h3>Resultado:</h3>
+          <p>Producto más vendido: {resultado.productoMasVendido}</p>
+          <p>Total de ventas: {resultado.totalVentas}</p>
+          <p>Vendedor: {resultado.vendedor}</p>
+        </div>
+      )}
       <div className='linkC'>
-      <a className='link' href="https://github.com/ChrisNT23/Mini-Core.git">Repositorio Github del Mini-Core</a>
+      <a className='link' href="https://github.com/ThyaraV/Minicore-Thyara.git">Repositorio Github del Mini-Core</a>
       </div>
     </div>
     
