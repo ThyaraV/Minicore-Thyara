@@ -20,3 +20,9 @@ El objetivo es encontrar en un rango de fechas el producto más vendido de todas
 ### `npm start`
 
 ## Arquitectura del Minicore
+![image](https://github.com/ThyaraV/Minicore-Thyara/assets/96449161/ed72c0b4-3694-4577-9e8e-74de53968748)
+
+Este diagrama representa la arquitectura básica del minicore. El frontend está construido con React y consiste en dos componentes principales: **buscador.jsx** y **App.js** . **buscador.jsx**  maneja la interfaz de usuario para ingresar fechas y mostrar el resultado, y realiza solicitudes HTTP al backend. **App.js** se encarga de enrutar y renderizar los componentes.
+
+El backend está construido en Node.js utilizando Express y se comunica con una base de datos MongoDB. **server.js** es el punto de entrada del backend y maneja las solicitudes HTTP entrantes. Realiza consultas a la base de datos MongoDB para buscar el producto más vendido en un rango de fechas y proporciona una respuesta al frontend.
+
