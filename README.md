@@ -31,6 +31,7 @@ El backend, desarrollado en Node.js con Express, se encarga de gestionar las sol
 
 ## Deploy del proyecto
 Backend:https://mini-core-backend.vercel.app/
+
 Frontend:https://mini-core-frontend.vercel.app/
 
 Adjunto imagen del resultado del deploy:
