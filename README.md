@@ -25,7 +25,13 @@ El objetivo es encontrar en un rango de fechas el producto más vendido de todas
 
 ![image](https://github.com/ThyaraV/Minicore-Thyara/assets/96449161/ed72c0b4-3694-4577-9e8e-74de53968748)
 
-Este diagrama representa la arquitectura básica del minicore. El frontend está construido con React y consiste en dos componentes principales: **buscador.jsx** y **App.js** . **buscador.jsx**  maneja la interfaz de usuario para ingresar fechas y mostrar el resultado, y realiza solicitudes HTTP al backend. **App.js** se encarga de enrutar y renderizar los componentes.
+Este diagrama representa la arquitectura básica del minicore. El frontend está construido utilizando la biblioteca React y consta de dos componentes principales: **buscador.jsx** y **App.js**. El primero, **buscador.jsx**, se encarga de la interfaz de usuario, permitiendo a los usuarios ingresar un rango de fechas y realizar búsquedas. Cuando los usuarios hacen clic en el botón "Buscar", este componente inicia una solicitud HTTP al backend. Por otro lado, **App.js** administra las rutas de la aplicación y asegura que el componente Buscador se muestre en la raíz de la aplicación.
 
-El backend está construido en Node.js utilizando Express y se comunica con una base de datos MongoDB. **server.js** es el punto de entrada del backend y maneja las solicitudes HTTP entrantes. Realiza consultas a la base de datos MongoDB para buscar el producto más vendido en un rango de fechas y proporciona una respuesta al frontend.
+El backend, desarrollado en Node.js con Express, se encarga de gestionar las solicitudes HTTP entrantes y conectarse a una base de datos MongoDB. El archivo principal, **server.js**, configura el servidor Express y define las rutas de la API. Cuando se recibe una solicitud HTTP desde **buscador.jsx**, el servidor procesa la información de entrada y realiza una consulta a la base de datos MongoDB para buscar el producto más vendido dentro del rango de fechas especificado. En resumen, esta aplicación sigue un modelo cliente-servidor, donde el frontend (cliente) interactúa con el backend y la base de datos para proporcionar a los usuarios información sobre el producto más vendido, el total de ventas y el nombre del vendedor en función del rango de fechas especificado.
 
+## Deploy del proyecto
+Backend:https://mini-core-backend.vercel.app/
+Frontend:https://mini-core-frontend.vercel.app/
+
+Adjunto imagen del resultado del deploy:
+![image](https://github.com/ThyaraV/Minicore-Thyara/assets/96449161/d686d4d6-1e38-454c-a491-0f8c8ec5fcfd)
